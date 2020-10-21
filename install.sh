@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PROGNAME="$(basename "$0")"
+DATE=$(date +'%Y')
 
 error() {
     echo "${PROGNAME}: ${1:-"Unkown Error"}" 1>&2
@@ -20,12 +21,12 @@ echo "Removing leftovers"
 rm wpilib.tar.gz
 
 echo "Moving stuff to the correct place"
-mkdir -p ~/wpilib/2020
-mv wpilib/* ~/wpilib/2020
+mkdir -p "~/wpilib/$DATE"
+mv wpilib/* "~/wpilib/$DATE"
 rmdir wpilib
 
 echo "Running ToolsUpdater.py"
-cd ~/wpilib/2020
+cd "~/wpilib/$DATE"
 python3 tools/ToolsUpdater.py > /dev/null 2>&1 || error "Failed to run python updator script"
 
 echo "Installing vscode extensions"
