@@ -4,6 +4,11 @@ PROGNAME="$(basename "$0")"
 DATE=$(date +'%Y')
 NEWDIR="$HOME/wpilib/$DATE"
 TARFILE=wpilib.tar.gz
+PROGS=(
+    git
+    code
+    python3
+)
 
 error() {
     printf "${PROGNAME}: ${1:-"Unkown Error"}\n" 1>&2
@@ -21,6 +26,14 @@ interrupt() {
 
 trap cleanup EXIT
 trap interrupt SIGINT
+
+check() {
+    for prog in "${PROGS[@]}"; do
+        command -v "$prog" || error "$prog must be executable for this script to work"
+    done
+}
+
+check
 
 if [ -d "$NEWDIR" ]; then
     error "$NEWDIR exists. Please remove it to prevent this script from overriding the directory"
